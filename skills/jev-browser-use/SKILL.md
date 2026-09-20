@@ -1,6 +1,6 @@
 ---
 name: jev-browser-use
-description: Fast browser actions with TypeSafe Jev. Codex handles planning, text input, visual interpretation, and verification; Jev handles navigation, clicks, toggles, and scrolling through the existing Computer Use runtime. Claude Code installation is supported; browser integration is coming soon.
+description: Use for repeated browser navigation, clicks, toggles, pagination, and scrolling through the existing Computer Use runtime. Jev selects permitted actions using the configured Vercel, TypeSafe, or OpenRouter provider; the host handles text, visuals, and final verification.
 ---
 
 # Jev browser operations
@@ -27,6 +27,8 @@ The intended scale boundary is action-heavy browser work. Keep navigation, expan
 Call `loadConfig()` and pass its result unchanged into `createSession()` or `run()` as shown below. The helper owns authentication, API requests, and response validation. Browser tasks must not select a provider, override the configured model, write their own API client, or change credential configuration unless the user requests that change.
 
 The user configuration works across project directories. The helper reads the credential from its configured local file; do not print credentials, dotenv contents, or raw HTTP error bodies, and do not put them in pages or traces. A missing credential is a configuration problem: do not search unrelated files or silently switch providers.
+
+For optional global routing, see [global browser routing](references/global-routing.md). Simple reads and one-step actions can use direct tools when delegation would add overhead.
 
 Only for installation, provider changes, or API troubleshooting, read [API integration maintenance](references/provider-configuration.md). It documents all currently supported adapters. It is not required reading for browser verification.
 

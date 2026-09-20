@@ -1,0 +1,18 @@
+name: Runtime checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [22, 26]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: node --check skills/jev-browser-use/bridge.mjs
+      - run: node --check scripts/install.mjs
+      - run: node --test tests/*.test.mjs

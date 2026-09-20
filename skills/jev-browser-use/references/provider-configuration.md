@@ -40,9 +40,25 @@ The adapter reads `TYPESAFE_API_KEY` and uses the fixed TypeSafe SystemOne endpo
 
 The adapter reads `OPENROUTER_API_KEY` (lowercase `openrouter_api_key` is also accepted) and uses OpenRouter's Decisions endpoint. The leading `~` requests the latest compatible Jev release.
 
+### Vercel Gateway evaluation endpoint
+
+```json
+{
+  "envFile": "/absolute/path/to/your/credentials.env",
+  "provider": "vercel",
+  "model": "typesafe-ai/jev"
+}
+```
+
+The adapter reads `AI_GATEWAY_API_KEY` and uses the fixed Vercel evaluation v4 endpoint. It sends the model in the `ai-model-id` header, requests zero data retention, and reads decision confidence from `providerMetadata.typesafe.confidence.next`. It does not use a chat-completions endpoint. The response does not echo model identity; the returned model label is the requested Gateway model ID. A missing confidence or probability distribution stops the run.
+
+The transport follows the public [Gateway evaluation implementation](https://github.com/vercel/ai/blob/main/packages/gateway/src/gateway-evaluation-model.ts). This protocol is experimental; verify it after provider upgrades. Gateway usage is billed to the key's team. Keep the key in a dedicated local dotenv file with owner-only permissions. An existing configuration is preserved by the installer.
+
+This fork includes the Vercel adapter. Update from this fork to retain it; replacing the skill with the upstream release can remove Vercel support.
+
 ## Shared behavior
 
-- Both adapters use Bearer authentication, reject redirects, validate the returned choice schema, confidence, probabilities, and model identity, and keep credentials out of the decision body.
+- All adapters use Bearer authentication, reject redirects, validate the returned choice schema, confidence, and probabilities, and keep credentials out of the decision body. Direct providers also validate their echoed model ID.
 - A transport failure may be retried once within the same bounded run using the same adapter and model. Authentication, schema, and quota failures are not retried.
 - Missing credentials are configuration errors. Do not search unrelated files or silently switch adapters.
 - Browser tasks should spread `loadConfig()` into `createSession()` or `run()` unchanged. Provider changes belong to installation or maintenance, not task execution.
