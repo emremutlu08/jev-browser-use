@@ -1,5 +1,7 @@
 # Jev Browser Use
 
+This fork adds Vercel Gateway support (`provider: "vercel"`, model `typesafe-ai/jev`) and browser keyboard compatibility. Install and update from `emremutlu08/jev-browser-use` to retain these changes. See [provider configuration](skills/jev-browser-use/references/provider-configuration.md). Offline checks: `node --test tests/*.test.mjs`.
+
 **Jev clicks. Codex thinks and verifies.**
 
 A browser Skill powered by [TypeSafe’s Jev](https://docs.typesafe.ai/introduction). Hand off navigation, clicks, toggles, and scrolling; keep Codex in charge of text input, visual judgment, and the final check.
